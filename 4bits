@@ -1,0 +1,103 @@
+def AND(a, b):
+    return a and b
+
+def OR(a, b):
+    return a or b
+
+def NOT(a):
+    return not a
+
+def XOR(a, b):
+    # en esta linea se implementa la funcion XOR usando AND, OR y NOT
+    return OR(AND(a, NOT(b)), AND(NOT(a), b))
+
+def full_adder(a, b, cin):
+    # a y b son los bits a sumar, cin es el carry de entrada
+
+    # suma = a XOR b XOR cin (la suma de los bits sin considerar el carry de salida)
+    s1 = XOR(a, b)
+    suma = XOR(s1, cin)
+
+    # carry = (a AND b) OR (cin AND (a XOR b))
+    # el carry de salida se genera si ambos bits son 1 o
+    # si uno de los bits es 1 y el carry de entrada es 1
+    c1 = AND(a, b)
+    c2 = AND(s1, cin)
+    cout = OR(c1, c2)
+
+    return suma, cout
+
+def sumador_4_bits(A, B):
+    # A y B: listas de 4 bits booleanos [b3,b2,b1,b0]
+    # donde b3 es el bit mas significativo (MSB)
+    # y b0 el menos significativo (LSB)
+    resultado = [False, False, False, False]
+    carry = False
+
+    # se suma de LSB a MSB (i = 3..0)
+    for i in range(3, -1, -1):
+        s, carry = full_adder(A[i], B[i], carry)
+        resultado[i] = s
+
+    return resultado, carry
+
+def invertir_bits(bits):
+    # invierte cada bit usando la compuerta NOT
+    return [NOT(b) for b in bits]
+
+def sumar_uno_4_bits(bits):
+    # suma 1: 0001 en bits es [False, False, False, True]
+    uno = [False, False, False, True]
+    res, _ = sumador_4_bits(bits, uno)
+    return res
+
+def restador_4_bits(A, B):
+    # en esta funcion se implementa la resta A - B
+    # usando el complemento a dos del segundo numero
+    B_invertido = invertir_bits(B)
+    B_comp2 = sumar_uno_4_bits(B_invertido)
+    resultado, _ = sumador_4_bits(A, B_comp2)
+    return resultado
+
+def str_a_bits(s):
+    # convierte un string binario (ej: "1011") a una lista de bits booleanos
+    return [c == '1' for c in s]
+
+def bits_a_str(bits):
+    # convierte una lista de bits booleanos a string binario
+    return ''.join('1' if b else '0' for b in bits)
+
+def validar_binario_4(s):
+    # valida que el numero ingresado tenga exactamente 4 bits
+    if len(s) != 4:
+        return False
+    for c in s:
+        if c != '0' and c != '1':
+            return False
+    return True
+
+if __name__ == "__main__":
+
+    # se solicita al usuario ingresar los valores binarios
+    A_str = input("Ingrese el primer numero binario (4 bits): ").strip()
+    while not validar_binario_4(A_str):
+        A_str = input("Entrada invalida. Ingrese un binario de 4 bits (ej: 1011): ").strip()
+
+    B_str = input("Ingrese el segundo numero binario (4 bits): ").strip()
+    while not validar_binario_4(B_str):
+        B_str = input("Entrada invalida. Ingrese un binario de 4 bits (ej: 0101): ").strip()
+
+    # conversion de strings a bits booleanos
+    A = str_a_bits(A_str)
+    B = str_a_bits(B_str)
+
+    # operaciones
+    suma, carry = sumador_4_bits(A, B)
+    resta = restador_4_bits(A, B)
+
+    # salida de resultados
+    print("\nResultados:")
+    print("A     =", bits_a_str(A))
+    print("B     =", bits_a_str(B))
+    print("SUMA  =", ('1' if carry else '0') + bits_a_str(suma))
+    print("RESTA =", bits_a_str(resta))
