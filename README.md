@@ -37,5 +37,17 @@ python sumador_restador.py
 El programa genera resultados correctos para la suma y la resta de numeros binarios de 4 bits.
 En la siguiente imagen se muestra un ejemplo de la ejecucion del programa desde la terminal.
 
-![Resultados del programa](images/PrimeraPrueba.png)
+Prueba 1
+
+![Resultado de la ejecucion](imagenes/PrimeraPrueba.png)
+
+Prueba 2
+
+![Resultado de la ejecucion](imagenes/SegundaPrueba.png)
+
+Prueba 3
+
+![Resultado de la ejecucion](imagenes/TerceraPrueba.png)
+
+
 
