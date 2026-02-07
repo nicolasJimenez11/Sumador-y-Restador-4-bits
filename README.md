@@ -43,7 +43,7 @@ Prueba 1
 
 Prueba 2
 
-![Resultado de la ejecucion](imagenes/SegundaPrueba.png)
+![Resultado de la ejecucion](imagenes/Segundaprueba.png)
 
 Prueba 3
 
